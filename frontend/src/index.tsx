@@ -7,7 +7,14 @@ import { store } from './store/store'
 import { Provider } from 'react-redux'
 
 import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 
 const root = ReactDOM.createRoot(
@@ -17,8 +24,11 @@ root.render(
 
     <BrowserRouter>
       <Provider store={store}>
+      <ThemeProvider theme={darkTheme}>
         
           <App />
+          <CssBaseline />
+     </ThemeProvider>
       </Provider>
     </BrowserRouter>
 

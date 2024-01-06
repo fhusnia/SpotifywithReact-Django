@@ -1,14 +1,16 @@
 
 import React from 'react';
 import './App.css';
-import {Layout} from './HOC/Layout/CustomerLayout';
 import LoginLayout from './HOC/Layout/AuthLayout';
+import ArtistLogin from './containers/Auth/ArtistLogin';
 
 function App() {
   return (
     <div className="bg-slate-400 ">
 
-      <LoginLayout>dd</LoginLayout>
+        <LoginLayout>
+          <ArtistLogin/>
+        </LoginLayout>
     </div>
   );
 }
