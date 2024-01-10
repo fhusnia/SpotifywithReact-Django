@@ -23,7 +23,7 @@ class CustomerAuthSerializer(serializers.ModelSerializer):
         user = validated_data.pop('user')
         image = validated_data.get('image')
         user = User.objects.create_user(**user)
-        customer = Customer.objects.create(user=user,image=image)
+        customer = Customer.objects.create(user=user,**validated_data)
         return customer
 
 
@@ -65,7 +65,7 @@ class ArtistAuthSerializer(serializers.ModelSerializer):
         user = validated_data.pop('user')
         image = validated_data.get('image')
         user = User.objects.create_user(**user)
-        artist = Artist.objects.create(user=user,image=image)
+        artist = Artist.objects.create(user=user,**validated_data)
         return artist
     
 

@@ -17,5 +17,9 @@ interface ILoginData<T extends 'customer'|'artist' > {
 
 
 export function getCustomerLoginData(username: string,password: string){
-    return iaxios.post('/auth/customer-login/',{username,password})
+    return iaxios.post<ILoginData<'customer'>>('/auth/customer-login/',{username,password})
+}
+
+export function getArtistLoginData(username: string,password: string){
+    return iaxios.post<ILoginData<'artist'>>('/auth/artist-login/',{username,password})
 }

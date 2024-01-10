@@ -1,11 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getCustomerLoginData } from "../../api/authApi"
+import { getCustomerLoginData,getArtistLoginData } from "../../api/authApi"
 
 
 interface IInitialState {
     id: number
     token: string
-    user_type: 'unchecked' | 'unauthorized' | 'customer' | 'artist'
+    user_type: 'unauthorized' | 'customer' | 'artist'
     username: string
     first_name: string
     last_name: string
@@ -24,7 +24,7 @@ const initialState = {
     image: '',
 }
 
-export const customerSlice = createSlice({
+export const authSlice = createSlice({
     name: 'customer',
     initialState: initialState,
     reducers: {
@@ -35,10 +35,10 @@ export const customerSlice = createSlice({
 })
 
 
-export const { setAuthData } = customerSlice.actions
+export const { setAuthData } = authSlice.actions
 
-export const loginAction = createAsyncThunk<void, {username: string,password: string}>(
-    'loginAction',
+export const customerLoginAction = createAsyncThunk<void, {username: string,password: string}>(
+    'customerLoginAction',
     async({username,password},{dispatch}) => {
         const response = await getCustomerLoginData(username,password)
         const loginData= response.data
@@ -47,3 +47,13 @@ export const loginAction = createAsyncThunk<void, {username: string,password: st
 
 )
 
+
+export const artistLoginAction = createAsyncThunk<void, {username: string,password: string}>(
+    'artistLoginAction',
+    async({username,password},{dispatch}) => {
+        const response = await getArtistLoginData(username,password)
+        const loginData= response.data
+        dispatch(setAuthData(loginData))
+    }
+
+)
