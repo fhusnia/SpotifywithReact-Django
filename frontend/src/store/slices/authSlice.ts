@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getCustomerLoginData,getArtistLoginData } from "../../api/authApi"
+import { loginCustomer,loginArtist } from "../../api/authApi"
 
 
 interface IInitialState {
@@ -40,7 +40,7 @@ export const { setAuthData } = authSlice.actions
 export const customerLoginAction = createAsyncThunk<void, {username: string,password: string}>(
     'customerLoginAction',
     async({username,password},{dispatch}) => {
-        const response = await getCustomerLoginData(username,password)
+        const response = await loginCustomer(username,password)
         const loginData= response.data
         dispatch(setAuthData(loginData))
     }
@@ -51,7 +51,7 @@ export const customerLoginAction = createAsyncThunk<void, {username: string,pass
 export const artistLoginAction = createAsyncThunk<void, {username: string,password: string}>(
     'artistLoginAction',
     async({username,password},{dispatch}) => {
-        const response = await getArtistLoginData(username,password)
+        const response = await loginArtist(username,password)
         const loginData= response.data
         dispatch(setAuthData(loginData))
     }

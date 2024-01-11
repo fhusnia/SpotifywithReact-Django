@@ -16,10 +16,21 @@ interface ILoginData<T extends 'customer'|'artist' > {
 }
 
 
-export function getCustomerLoginData(username: string,password: string){
+export function loginCustomer(username: string,password: string){
     return iaxios.post<ILoginData<'customer'>>('/auth/customer-login/',{username,password})
 }
 
-export function getArtistLoginData(username: string,password: string){
+export function loginArtist(username: string,password: string){
     return iaxios.post<ILoginData<'artist'>>('/auth/artist-login/',{username,password})
+}
+
+interface ICustomerRegisterParams{
+    firstNname: string;lastName: string; username: string; password: string; email: string; birthDate: string; gender: string; image:File
+}
+
+export function registerArtist(data: ICustomerRegisterParams){
+    const payload = new FormData()
+    for (let [key,value] of Object.entries(data)){
+        payload.append(key,value)
+    }
 }

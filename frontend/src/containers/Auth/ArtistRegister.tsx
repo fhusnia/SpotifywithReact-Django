@@ -30,9 +30,15 @@ export default function ArtistRegister(props: IArtistRegisterProps) {
     const [password,setPassword] = React.useState<string>('');
     const [passwordAgain,setPasswordAgain] = React.useState<string>('');
     const [birhDate,setBirthDate] = React.useState<Dayjs|null>();
-    const [gender,setGender] = React.useState<string>('');
+    const [gender,setGender] = React.useState<string>('man');
+    const [imageFile,setImageFile] = React.useState<File>()
 
+    const fileInputRef = React.useRef<HTMLInputElement>(null)
 
+    const fileChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files![0]
+        setImageFile(file)
+    }
 
   return (
     <form className='bg-neutral-800 w-full md:w-1/2 mx-auto mt-20 mb-40 p-5 flex flex-col gap-3 rounded'>
@@ -69,6 +75,11 @@ export default function ArtistRegister(props: IArtistRegisterProps) {
                     <MenuItem value='other'>Other</MenuItem>
                 </Select>
             </FormControl>
+            <div>
+                {imageFile && <img src={URL.createObjectURL(imageFile)} alt="uploaded"></img>}
+                <Button variant="outlined" onClick={() => fileInputRef.current!.click()} >Upload Image</Button>
+                <input ref={fileInputRef}  onChange={fileChangeHandler} type="file" className='hidden'/>
+            </div>
         <div className='flex justify-between items-center'>
             <FormControlLabel control={<Checkbox />} label="Allow Terms & Privacy" />
             <div className='font-bold cursor-pointer hover:underline' onClick={() => setTapModalOpen(true)}>Terms and Privacy</div>
