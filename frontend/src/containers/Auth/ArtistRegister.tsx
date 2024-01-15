@@ -7,6 +7,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TermsAndPrivacyModal from '../../components/Auth/TermsandPrivacyModal';
+import { artistRegisterAction } from '../../store/slices/authSlice';
+import { useAppDispatch } from '../../store/hooks';
 
 
 const TERMS_AND_PRIVACY = `
@@ -29,7 +31,7 @@ export default function ArtistRegister(props: IArtistRegisterProps) {
     const [email,setEmail] = React.useState<string>('');
     const [password,setPassword] = React.useState<string>('');
     const [passwordAgain,setPasswordAgain] = React.useState<string>('');
-    const [birhDate,setBirthDate] = React.useState<Dayjs|null>();
+    const [birhDate,setBirthDate] = React.useState<Dayjs|null>(null);
     const [gender,setGender] = React.useState<string>('man');
     const [imageFile,setImageFile] = React.useState<File>()
 
@@ -39,6 +41,25 @@ export default function ArtistRegister(props: IArtistRegisterProps) {
         const file = e.target.files![0]
         setImageFile(file)
     }
+
+    const dispatch = useAppDispatch()
+
+    const submitHandler = () => {
+        if(firstName && lastName && username && email && password && birhDate && gender && imageFile){
+            const data = {
+                first_name: firstName,
+                last_name: lastName,
+                username,
+                email,
+                password,
+                birth_date: birhDate.format('YYYY-MM-DD'),
+                gender,
+                image: imageFile
+            }
+            dispatch(artistRegisterAction(data))
+        }
+    }
+
 
   return (
     <form className='bg-neutral-800 w-full md:w-1/2 mx-auto mt-20 mb-40 p-5 flex flex-col gap-3 rounded'>
@@ -51,7 +72,7 @@ export default function ArtistRegister(props: IArtistRegisterProps) {
       <TextField value={passwordAgain} onChange={(e) =>setPasswordAgain(e.target.value)} id="outlined-basic" label="Password again" type="password" variant="outlined" fullWidth/>
         <div>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker', 'DatePicker']}>
+            <DemoContainer components={['DatePicker']}>
                 <DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />
                 <DatePicker
                 label="Controlled picker"
@@ -84,7 +105,7 @@ export default function ArtistRegister(props: IArtistRegisterProps) {
             <FormControlLabel control={<Checkbox />} label="Allow Terms & Privacy" />
             <div className='font-bold cursor-pointer hover:underline' onClick={() => setTapModalOpen(true)}>Terms and Privacy</div>
         </div>
-           <Button variant="contained" fullWidth size="large">Register</Button>
+           <Button variant="contained" fullWidth size="large" onClick={submitHandler}>Register</Button>
            <TermsAndPrivacyModal open={tapModalOpen} text={TERMS_AND_PRIVACY} onClose={() => setTapModalOpen(false)}/>
     </form>
   );

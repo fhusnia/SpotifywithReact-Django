@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { loginCustomer,loginArtist } from "../../api/authApi"
+import { loginCustomer,loginArtist, ICustomerRegisterParams, registerArtist } from "../../api/authApi"
 
 
 interface IInitialState {
@@ -10,7 +10,6 @@ interface IInitialState {
     first_name: string
     last_name: string
     email: string
-    image: string
 }
 
 const initialState = {
@@ -21,11 +20,10 @@ const initialState = {
     first_name: '',
     last_name: '',
     email: '',
-    image: '',
 }
 
 export const authSlice = createSlice({
-    name: 'customer',
+    name: 'auth',
     initialState: initialState,
     reducers: {
         setAuthData(state, action: PayloadAction<IInitialState>) {
@@ -54,6 +52,16 @@ export const artistLoginAction = createAsyncThunk<void, {username: string,passwo
         const response = await loginArtist(username,password)
         const loginData= response.data
         dispatch(setAuthData(loginData))
+    }
+
+)
+
+export const artistRegisterAction = createAsyncThunk<void, ICustomerRegisterParams>(
+    'artistRegisterAction',
+    async(data,{dispatch}) => {
+        const response = await registerArtist(data)
+        const registerData = response.data
+        dispatch(setAuthData(registerData))
     }
 
 )

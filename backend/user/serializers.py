@@ -13,11 +13,16 @@ class CustomerAuthSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
     email = serializers.EmailField(source='user.email')
-    image =  serializers.ImageField(required=False)
+    image =  serializers.ImageField(required=False,write_only=True)
 
     class Meta:
         model = Customer
-        exclude = ['following_artist','user']      
+        fields = ['id', 'token', 'user_type', 'username', 'password', 'gender','birth_date','first_name','user' ,'last_name', 'email', 'image']
+        extra_kwargs = {
+            'birth_date': {'write_only':True},
+            'gender': {'write_only':True}
+        }
+        
 
     def create(self,validated_data):
         user = validated_data.pop('user')
@@ -55,11 +60,15 @@ class ArtistAuthSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
     email = serializers.EmailField(source='user.email')
-    image =  serializers.ImageField(required=False)
+    image =  serializers.ImageField(required=False,write_only=True)
     
     class Meta:
         model = Artist
-        fields = ['id', 'token', 'user_type', 'username', 'password', 'first_name','user' ,'last_name', 'email', 'image']
+        fields = ['id', 'token', 'user_type', 'username', 'password', 'gender','birth_date','first_name','user' ,'last_name', 'email', 'image']
+        extra_kwargs = {
+            'birth_date': {'write_only':True},
+            'gender': {'write_only':True}
+        }
       
     def create(self, validated_data):
         user = validated_data.pop('user')
