@@ -20,16 +20,17 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-
-    <BrowserRouter>
-      <Provider store={store}>
-      <ThemeProvider theme={darkTheme}>
-        
-          <App />
-          <CssBaseline />
-     </ThemeProvider>
-      </Provider>
-    </BrowserRouter>
+    <React.StrictMode>
+        <BrowserRouter>
+          <Provider store={store}>
+            <ThemeProvider theme={darkTheme}>
+              
+                <App />
+                <CssBaseline />
+          </ThemeProvider>
+          </Provider>
+        </BrowserRouter>
+    </React.StrictMode>
 
 );
 

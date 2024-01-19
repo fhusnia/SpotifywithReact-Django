@@ -9,7 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TermsAndPrivacyModal from '../../components/Auth/TermsandPrivacyModal';
 import { artistRegisterAction } from '../../store/slices/authSlice';
 import { useAppDispatch } from '../../store/hooks';
-
+import { Link } from 'react-router-dom';
 
 const TERMS_AND_PRIVACY = `
 loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem
@@ -106,6 +106,9 @@ export default function ArtistRegister(props: IArtistRegisterProps) {
             <div className='font-bold cursor-pointer hover:underline' onClick={() => setTapModalOpen(true)}>Terms and Privacy</div>
         </div>
            <Button variant="contained" fullWidth size="large" onClick={submitHandler}>Register</Button>
+           <div className='text-center'>
+                <Link to="/artist/login/">Sign In</Link>
+           </div>
            <TermsAndPrivacyModal open={tapModalOpen} text={TERMS_AND_PRIVACY} onClose={() => setTapModalOpen(false)}/>
     </form>
   );

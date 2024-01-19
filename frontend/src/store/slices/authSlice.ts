@@ -15,7 +15,7 @@ interface IInitialState {
 const initialState = {
     id: 0,
     token: '',
-    user_type: 'unchecked',
+    user_type: 'unauthorized',
     username: '',
     first_name: '',
     last_name: '',
