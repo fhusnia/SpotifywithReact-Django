@@ -2,10 +2,12 @@
 import React from 'react';
 import './App.css';
 import AuthLayout from './HOC/Layout/AuthLayout';
-import ArtistLogin from './pages/Auth/ArtistLogin';
-import ArtistRegister from './pages/Auth/ArtistRegister';
-import { Route,Routes } from 'react-router-dom';
+import ArtistLayout from './HOC/Layout/AuthLayout';
+import ArtistLogin from './pages/Artist/ArtistAuth/ArtistLogin';
+import ArtistRegister from './pages/Artist/ArtistAuth/ArtistRegister';
+import { Route,Routes,Navigate} from 'react-router-dom';
 import { useAppSelector } from './store/hooks';
+import ArtistSongs from './pages/Artist/ArtistDashboard/ArtistSongs';
 
 
 
@@ -24,6 +26,16 @@ function App() {
 
           </Routes>
         </AuthLayout>
+      )
+    }else if(authData.user_type === 'artist'){
+      return(
+        <ArtistLayout>
+          <Routes>
+            <Route path="/" element={<ArtistSongs />}/>
+            <Route path="/*" element={<Navigate to="/" />} />
+      
+          </Routes>
+        </ArtistLayout>
       )
     }
 

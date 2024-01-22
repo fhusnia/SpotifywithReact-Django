@@ -6,9 +6,9 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import TermsAndPrivacyModal from '../../components/Auth/TermsandPrivacyModal';
-import { artistRegisterAction } from '../../store/slices/authSlice';
-import { useAppDispatch } from '../../store/hooks';
+import TermsAndPrivacyModal from '../../../components/Auth/TermsandPrivacyModal';
+import { artistRegisterAction } from '../../../store/slices/authSlice';
+import { useAppDispatch } from '../../../store/hooks';
 import { Link } from 'react-router-dom';
 
 const TERMS_AND_PRIVACY = `
