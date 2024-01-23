@@ -13,7 +13,7 @@ class CustomerAuthSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
     email = serializers.EmailField(source='user.email')
-    image =  serializers.ImageField(required=False,write_only=True)
+    image =  serializers.ImageField(required=False)
 
     class Meta:
         model = Customer
@@ -60,7 +60,7 @@ class ArtistAuthSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
     email = serializers.EmailField(source='user.email')
-    image =  serializers.ImageField(required=False,write_only=True)
+    image =  serializers.ImageField(required=False)
     
     class Meta:
         model = Artist

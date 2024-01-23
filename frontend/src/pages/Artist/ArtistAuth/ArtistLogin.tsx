@@ -24,8 +24,8 @@ export default function ArtistLogin (props: IArtistLoginProps) {
 
     <form className='bg-neutral-800 w-full md:w-1/2 mx-auto mt-40 p-5 flex flex-col gap-3 rounded'>
       <div className="text-center text-4xl mb-3">Login</div>
-      <TextField onChange={e => setUsername(e.target.value)} value={username} id="outlined-basic" label="Username" variant="outlined" fullWidth/>
-      <TextField  onChange={e => setPassword(e.target.value)} value={password} id="outlined-basic" label="Password" type='password' variant="outlined" fullWidth/>
+      <TextField onChange={e => setUsername(e.target.value)}  onKeyDown={e => e.key === 'Enter' && submitHandler()}  value={username} id="outlined-basic" label="Username" variant="outlined" fullWidth/>
+      <TextField  onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitHandler()} value={password} id="outlined-basic" label="Password" type='password' variant="outlined" fullWidth/>
       <FormControlLabel control={<Checkbox />} label="Remember me" />
       <Button onClick={submitHandler} variant="contained" fullWidth size="large">Login</Button>
 

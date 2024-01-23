@@ -9,6 +9,7 @@ interface IAuthData<T extends 'customer'|'artist' > {
     first_name: string
     last_name: string
     email: string
+    image: string
 }
 
 

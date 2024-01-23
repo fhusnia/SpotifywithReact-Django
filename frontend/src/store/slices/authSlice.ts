@@ -10,6 +10,7 @@ interface IInitialState {
     first_name: string
     last_name: string
     email: string
+    image: string
 }
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
     first_name: '',
     last_name: '',
     email: '',
+    image: '',
 }
 
 export const authSlice = createSlice({

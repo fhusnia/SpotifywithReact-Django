@@ -2,7 +2,7 @@
 import React from 'react';
 import './App.css';
 import AuthLayout from './HOC/Layout/AuthLayout';
-import ArtistLayout from './HOC/Layout/AuthLayout';
+import ArtistLayout from './HOC/Layout/ArtistLayout';
 import ArtistLogin from './pages/Artist/ArtistAuth/ArtistLogin';
 import ArtistRegister from './pages/Artist/ArtistAuth/ArtistRegister';
 import { Route,Routes,Navigate} from 'react-router-dom';
@@ -42,7 +42,7 @@ function App() {
   },[authData])
 
   return (
-    <div className="bg-slate-400 ">
+    <div>
       
          {routes}
         
