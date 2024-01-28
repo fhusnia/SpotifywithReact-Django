@@ -12,7 +12,7 @@ export default function ArtistLayout (props: IArtistLayoutProps) {
     <div className='flex h-screen flex-col'>
         <div><ArtistNavbar /></div>
         <div className='flex flex-grow'>
-          <div className='basis-3/12 '>
+          <div className='basis-[-600px] '>
             <ArtistSideBar/>
           </div>
           <div className='flex-grow bg-slate-600'>{props.children}</div>

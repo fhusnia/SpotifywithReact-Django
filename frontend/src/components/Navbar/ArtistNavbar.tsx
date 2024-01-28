@@ -23,11 +23,16 @@ function ArtistNavbar() {
                     // onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
+                    Add Song
+                  </Button>
+                  <Button
+                    // onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
                     Logout
                   </Button>
           
           </Box>
-
         
         </Toolbar>
       </Container>
