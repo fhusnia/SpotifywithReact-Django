@@ -15,7 +15,7 @@ export default function ArtistLayout (props: IArtistLayoutProps) {
           <div className='basis-[-600px] '>
             <ArtistSideBar/>
           </div>
-          <div className='flex-grow bg-slate-600'>{props.children}</div>
+          <div className='flex-grow '>{props.children}</div>
         </div>
     </div>
   );

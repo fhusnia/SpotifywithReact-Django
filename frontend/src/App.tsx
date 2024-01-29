@@ -33,7 +33,7 @@ function App() {
         <ArtistLayout>
           <Routes>
             <Route path="/" element={<ArtistSongs />}/>
-            <Route path="/song-form/: songId" element={<SongForm />}/>
+            <Route path="/song-form/:songId" element={<SongForm />}/>
             <Route path="/*" element={<Navigate to="/" />} />
       
           </Routes>
