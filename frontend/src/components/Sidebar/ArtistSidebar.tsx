@@ -9,7 +9,8 @@ import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import { useAppSelector } from '../../store/hooks';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import PersonIcon from '@mui/icons-material/Person';
-
+import  AudiotrackIcon  from '@mui/icons-material/Audiotrack';
+import { Link } from 'react-router-dom';
 
 export default function ArtistSidebar() {
     const authData = useAppSelector(state => state.auth)
@@ -26,22 +27,36 @@ export default function ArtistSidebar() {
         </div>
 
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        <ListItemButton>
-            <ListItemAvatar>
-            <Avatar>
-                <QueueMusicIcon/>
-            </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Songs" secondary="Add or Edit Songs" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemAvatar>
-            <Avatar>
-                <PersonIcon />
-            </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Profile" secondary="Edit Your Profile" />
-        </ListItemButton>
+                <Link to="/">
+                    <ListItemButton>
+                        <ListItemAvatar>
+                        <Avatar>
+                            <QueueMusicIcon/>
+                        </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary="Songs" secondary="All Songs You Have" />
+                    </ListItemButton>
+                </Link>
+                <Link to="/song-form/new">
+                    <ListItemButton>
+                        <ListItemAvatar>
+                        <Avatar>
+                            <AudiotrackIcon />
+                        </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary="Add Song" secondary="Add Your New Song" />
+                    </ListItemButton>
+                </Link>
+                <Link to="/">
+                    <ListItemButton>
+                        <ListItemAvatar>
+                        <Avatar>
+                            <PersonIcon />
+                        </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary="Profile" secondary="Edit Your Profile" />
+                    </ListItemButton>
+                </Link>
       
         </List>
     </div>

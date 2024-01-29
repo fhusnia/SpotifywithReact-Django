@@ -8,6 +8,7 @@ import ArtistRegister from './pages/Artist/ArtistAuth/ArtistRegister';
 import { Route,Routes,Navigate} from 'react-router-dom';
 import { useAppSelector } from './store/hooks';
 import ArtistSongs from './pages/Artist/ArtistDashboard/ArtistSongs';
+import SongForm from './pages/Artist/SongForm/SongForm';
 
 
 
@@ -32,6 +33,7 @@ function App() {
         <ArtistLayout>
           <Routes>
             <Route path="/" element={<ArtistSongs />}/>
+            <Route path="/song-form/: songId" element={<SongForm />}/>
             <Route path="/*" element={<Navigate to="/" />} />
       
           </Routes>

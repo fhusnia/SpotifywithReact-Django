@@ -8,7 +8,7 @@ export default function ArtistSongs (props: IArtistSongsProps) {
   return (
     <div className='p-3'>
       <div className='text-2xl text-center mb-5'>
-            ARTISTSONFG
+            ARTISTSONG
       </div>
       <div className='flex flex-wrap gap-5'>  
         <div className='w-60'>
