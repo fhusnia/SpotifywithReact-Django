@@ -6,15 +6,22 @@ import ArtistLayout from './HOC/Layout/ArtistLayout';
 import ArtistLogin from './pages/Artist/ArtistAuth/ArtistLogin';
 import ArtistRegister from './pages/Artist/ArtistAuth/ArtistRegister';
 import { Route,Routes,Navigate} from 'react-router-dom';
-import { useAppSelector } from './store/hooks';
+import { useAppDispatch, useAppSelector } from './store/hooks';
 import ArtistSongs from './pages/Artist/ArtistDashboard/ArtistSongs';
 import SongForm from './pages/Artist/SongForm/SongForm';
-
+import { loadStoredAuthData } from './store/slices/authSlice';
 
 
 function App() {
   const authData = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch()
 
+
+  React.useEffect(() => {
+    dispatch(loadStoredAuthData())
+  },[dispatch])
+
+  
   const routes = React.useMemo(() => {
     if(authData.user_type === 'unauthorized'){
       return(

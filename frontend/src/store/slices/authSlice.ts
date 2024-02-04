@@ -37,6 +37,26 @@ export const authSlice = createSlice({
 
 export const { setAuthData } = authSlice.actions
 
+
+
+export const loadStoredAuthData = createAsyncThunk<void, void>(
+    'loadStoredAuthData',
+
+    async (payload,{dispatch}) =>{
+        const localRawAuthData = localStorage.getItem('authData')
+        const sessionRawAuthData = sessionStorage.getItem('authData')
+        const rawAuthData = localRawAuthData || sessionRawAuthData
+        if(rawAuthData){
+            const authData: IInitialState = JSON.parse(rawAuthData)
+            dispatch(setAuthData(authData))
+        }
+    }
+
+)
+
+
+
+
 export const customerLoginAction = createAsyncThunk<void, {username: string,password: string}>(
     'customerLoginAction',
     async({username,password},{dispatch}) => {
@@ -48,11 +68,16 @@ export const customerLoginAction = createAsyncThunk<void, {username: string,pass
 )
 
 
-export const artistLoginAction = createAsyncThunk<void, {username: string,password: string}>(
+export const artistLoginAction = createAsyncThunk<void, {username: string,password: string,remember_me: boolean}>(
     'artistLoginAction',
-    async({username,password},{dispatch}) => {
+    async({username,password,remember_me},{dispatch}) => {
         const response = await loginArtist(username,password)
         const loginData= response.data
+        if(remember_me)
+            localStorage.setItem('authData',JSON.stringify(loginData))
+        else
+            sessionStorage.setItem('authData',JSON.stringify(loginData))
+
         dispatch(setAuthData(loginData))
     }
 
@@ -63,6 +88,7 @@ export const artistRegisterAction = createAsyncThunk<void, ICustomerRegisterPara
     async(data,{dispatch}) => {
         const response = await registerArtist(data)
         const registerData = response.data
+        sessionStorage.setItem('authData',JSON.stringify(registerData))
         dispatch(setAuthData(registerData))
     }
 

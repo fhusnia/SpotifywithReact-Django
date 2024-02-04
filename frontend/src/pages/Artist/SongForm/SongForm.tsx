@@ -2,6 +2,10 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add';
 import { Button } from '@mui/material';
+import { IGenre } from '../../../types';
+import { getGenreList } from '../../../api/SongApi';
+import Autocomplete from '@mui/material/Autocomplete';
+
 
 
 export interface ISongFormProps {
@@ -11,11 +15,16 @@ export default function SongForm (props: ISongFormProps) {
 
   const[imageFile,setImageFile] = React.useState<File>()
   const[songFile,setSongFile] = React.useState<File>()
-
-
+  const[allGenres,setAllgenres] = React.useState<IGenre[]>()
+  const[genre,setGenre] = React.useState<IGenre|null>(null)
   const imageUploadInputRef = React.useRef<HTMLInputElement>(null)
   const songUploadInputRef = React.useRef<HTMLInputElement>(null)
 
+  React.useEffect(() => {
+    getGenreList().then(response => {
+      setAllgenres(response.data)
+    })
+  },[])
 
 
   const imageClickHandler = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -33,6 +42,7 @@ export default function SongForm (props: ISongFormProps) {
 
   const songUploadHandler = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) =>{
       setSongFile(e.target.files![0])
+      console.log(e.target.files)
   },[])
 
 
@@ -69,9 +79,32 @@ export default function SongForm (props: ISongFormProps) {
               <TextField fullWidth  label="Duration (Seconds)" variant="outlined" type="number"/>
 
           </div>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={allGenres}
+            getOptionLabel={(option) => option.title}
+            value={genre}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Movie" />}
+          />
           <div className='flex items-center gap-3'>
-            <div>No Song Uploaded</div>
-            <Button variant="contained" size="large" color="primary" onClick={() => songUploadInputRef.current!.click()}>Upload Song</Button>
+            {
+              songFile
+              ?
+              <>
+                <div>{songFile.name} ({(songFile.size / 1024**2).toFixed(2)})mb</div>
+                <Button variant="contained" size="large" color="error" onClick={() => setSongFile(undefined)}>Remove Song</Button>
+
+              </>
+              :
+              <>
+                  <div>No Song Uploaded</div>
+                <Button variant="contained" size="large" color="primary" onClick={() => songUploadInputRef.current!.click()}>Upload Song</Button>
+              </>
+            }
+          
+          
             <input onChange={songUploadHandler}  ref={songUploadInputRef} type="file" className='hidden' />
           </div>
           <div className=''>

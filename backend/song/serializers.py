@@ -16,7 +16,7 @@ class ArtistSummary(serializers.ModelSerializer):
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = '__all__'
+        exclude = ['updated','created']
 
 
 

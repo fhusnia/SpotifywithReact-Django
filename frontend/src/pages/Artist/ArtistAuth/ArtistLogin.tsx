@@ -10,14 +10,16 @@ export interface IArtistLoginProps {
 export default function ArtistLogin (props: IArtistLoginProps) {
   const [username,setUsername] = React.useState<string>('')
   const [password,setPassword] = React.useState<string>('')
+  const [remember_me,setRemember_me] = React.useState<boolean>(false)
+
 
   const dispatch = useAppDispatch()
 
   const submitHandler = React.useCallback(() =>{
       if(username && password){
-          dispatch(artistLoginAction({username,password}))
+          dispatch(artistLoginAction({username,password,remember_me}))
       }
-  },[username,password,dispatch])
+  },[username,password,remember_me,dispatch])
 
 
   return (
@@ -26,7 +28,7 @@ export default function ArtistLogin (props: IArtistLoginProps) {
       <div className="text-center text-4xl mb-3">Login</div>
       <TextField onChange={e => setUsername(e.target.value)}  onKeyDown={e => e.key === 'Enter' && submitHandler()}  value={username} id="outlined-basic" label="Username" variant="outlined" fullWidth/>
       <TextField  onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && submitHandler()} value={password} id="outlined-basic" label="Password" type='password' variant="outlined" fullWidth/>
-      <FormControlLabel control={<Checkbox />} label="Remember me" />
+      <FormControlLabel control={<Checkbox checked={remember_me} onChange={e => setRemember_me(e.target.checked)}/>} label="Remember me" />
       <Button onClick={submitHandler} variant="contained" fullWidth size="large">Login</Button>
 
       <div className='text-center'>
