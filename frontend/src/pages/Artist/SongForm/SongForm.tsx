@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add';
 import { Button } from '@mui/material';
 import { IGenre } from '../../../types';
-import { getGenreList } from '../../../api/SongApi';
+import { getGenreList } from '../../../api/songApi';
 import Autocomplete from '@mui/material/Autocomplete';
 
 
@@ -17,6 +17,10 @@ export default function SongForm (props: ISongFormProps) {
   const[songFile,setSongFile] = React.useState<File>()
   const[allGenres,setAllgenres] = React.useState<IGenre[]>()
   const[genre,setGenre] = React.useState<IGenre|null>(null)
+
+
+
+
   const imageUploadInputRef = React.useRef<HTMLInputElement>(null)
   const songUploadInputRef = React.useRef<HTMLInputElement>(null)
 
@@ -82,9 +86,10 @@ export default function SongForm (props: ISongFormProps) {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={allGenres}
+            options={allGenres!}
             getOptionLabel={(option) => option.title}
             value={genre}
+            onChange={(e,g) => setGenre(g)}
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label="Movie" />}
           />
