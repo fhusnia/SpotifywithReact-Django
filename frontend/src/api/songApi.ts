@@ -1,4 +1,4 @@
-import { iaxios } from "./iaxios"
+import  iaxios  from "./iaxios"
 import type { IGenre } from "../types"
 
 export function getGenreList(){

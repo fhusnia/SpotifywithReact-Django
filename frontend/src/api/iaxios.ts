@@ -6,6 +6,18 @@ const BASE_URL =
     : 'https://customdomain.com'
 
 
-export const iaxios = axios.create({
+const iaxios = axios.create({
     baseURL: BASE_URL,
 })
+
+export function setTokenToAxiosInstance(token: string){
+    iaxios.defaults.headers.common['Authorization'] = `Token ${token}`
+}
+
+export function removeTokenFromAxiosInstance(){
+    delete iaxios.defaults.headers.common['Authorization'] 
+}
+
+
+
+export default iaxios;

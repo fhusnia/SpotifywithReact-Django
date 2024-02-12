@@ -5,11 +5,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import spotifyLogo from '../../assets/images/spotify-logo.png'
+import { useAppDispatch } from '../../store/hooks';
+import { logoutAction } from '../../store/slices/authSlice';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ArtistNavbar() {
+
+  const dispatch = useAppDispatch()
 
   return (
     <AppBar position="static">
@@ -19,14 +23,10 @@ function ArtistNavbar() {
             
           <Box sx={{ display: 'flex', ml: 'auto'}}>
           
+                
                   <Button
                     // onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    Add Song
-                  </Button>
-                  <Button
-                    // onClick={handleCloseNavMenu}
+                    onClick={() => dispatch(logoutAction())}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
                     Logout

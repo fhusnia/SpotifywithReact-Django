@@ -34,10 +34,12 @@ export default function SongForm (props: ISongFormProps) {
   const imageClickHandler = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if(imageFile){
       setImageFile(undefined)
+      imageUploadInputRef.current!.value = '';
     } else{
         imageUploadInputRef.current!.click()
     }
   },[imageFile])
+
 
 
   const imageUploadHandler = React.useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -46,9 +48,15 @@ export default function SongForm (props: ISongFormProps) {
 
   const songUploadHandler = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) =>{
       setSongFile(e.target.files![0])
-      console.log(e.target.files)
+     
   },[])
 
+
+
+  const songRemoveHandler = React.useCallback(() => {
+    setSongFile(undefined)
+    songUploadInputRef.current!.value = '';
+  },[])
 
   
  const imageContentJSX = React.useMemo(() =>{
@@ -99,7 +107,7 @@ export default function SongForm (props: ISongFormProps) {
               ?
               <>
                 <div>{songFile.name} ({(songFile.size / 1024**2).toFixed(2)})mb</div>
-                <Button variant="contained" size="large" color="error" onClick={() => setSongFile(undefined)}>Remove Song</Button>
+                <Button variant="contained" size="large" color="error" onClick={songRemoveHandler}>Remove Song</Button>
 
               </>
               :

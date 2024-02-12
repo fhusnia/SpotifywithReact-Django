@@ -30,6 +30,13 @@ def artist_login_view(request):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+def logout_view(request):
+    request.user.auth_token.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 class CustomerRegisterAV(CreateAPIView):
     serializer_class = CustomerAuthSerializer
     queryset = Customer.objects.all()

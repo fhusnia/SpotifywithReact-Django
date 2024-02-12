@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { loginCustomer,loginArtist, ICustomerRegisterParams, registerArtist } from "../../api/authApi"
+import { loginCustomer,loginArtist, ICustomerRegisterParams, registerArtist, logout } from "../../api/authApi"
+import { setTokenToAxiosInstance,removeTokenFromAxiosInstance } from "../../api/iaxios"
 
 
 interface IInitialState {
@@ -30,12 +31,15 @@ export const authSlice = createSlice({
     reducers: {
         setAuthData(state, action: PayloadAction<IInitialState>) {
             return action.payload
+        },
+        resetAuthData(){
+            return initialState
         }
     }
 })
 
 
-export const { setAuthData } = authSlice.actions
+export const { setAuthData,resetAuthData } = authSlice.actions
 
 
 
@@ -48,6 +52,7 @@ export const loadStoredAuthData = createAsyncThunk<void, void>(
         const rawAuthData = localRawAuthData || sessionRawAuthData
         if(rawAuthData){
             const authData: IInitialState = JSON.parse(rawAuthData)
+            setTokenToAxiosInstance(authData.token)
             dispatch(setAuthData(authData))
         }
     }
@@ -77,7 +82,7 @@ export const artistLoginAction = createAsyncThunk<void, {username: string,passwo
             localStorage.setItem('authData',JSON.stringify(loginData))
         else
             sessionStorage.setItem('authData',JSON.stringify(loginData))
-
+        setTokenToAxiosInstance(loginData.token)
         dispatch(setAuthData(loginData))
     }
 
@@ -89,7 +94,21 @@ export const artistRegisterAction = createAsyncThunk<void, ICustomerRegisterPara
         const response = await registerArtist(data)
         const registerData = response.data
         sessionStorage.setItem('authData',JSON.stringify(registerData))
+        setTokenToAxiosInstance(registerData.token)
         dispatch(setAuthData(registerData))
     }
 
+)
+
+export const logoutAction = createAsyncThunk<void, void>(
+    'logoutAction',
+
+    async (payload, {dispatch}) => {
+        logout().then(() => {
+            removeTokenFromAxiosInstance()
+            localStorage.removeItem('authData')
+            sessionStorage.removeItem('authData')
+            dispatch(resetAuthData())
+        })
+    }
 )

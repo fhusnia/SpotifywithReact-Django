@@ -1,4 +1,4 @@
-import { iaxios } from "./iaxios"
+import  iaxios  from "./iaxios"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface IAuthData<T extends 'customer'|'artist' > {
@@ -31,4 +31,9 @@ export function registerArtist(data: ICustomerRegisterParams){
         payload.append(key,value)
     }
     return iaxios.post<IAuthData<'artist'>>('/auth/artist-register/',payload,{headers: {'Content-Type': 'multipart/form-data'}})
+}
+
+
+export function logout() {
+    return iaxios.post('/auth/logout/')
 }
