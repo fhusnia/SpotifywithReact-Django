@@ -4,3 +4,10 @@ export interface IGenre {
 
 }
 
+export interface IArtist{
+    id: number
+    first_name: string
+    last_name: string
+    username: string
+    image: string
+}

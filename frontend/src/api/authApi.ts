@@ -1,3 +1,4 @@
+import { IArtist } from "../types"
 import  iaxios  from "./iaxios"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,4 +37,9 @@ export function registerArtist(data: ICustomerRegisterParams){
 
 export function logout() {
     return iaxios.post('/auth/logout/')
+}
+
+
+export function searchArtist(keyword:string){
+    return iaxios.get<IArtist[]>(`/auth/artists/?search=${keyword}`)
 }

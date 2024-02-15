@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from .serializers import CustomerAuthSerializer, ArtistAuthSerializer,ArtistSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.filters import SearchFilter
 from .models import Customer,Artist
 from rest_framework.parsers import FormParser,MultiPartParser
 
@@ -52,6 +53,8 @@ class ArtistRegisterAV(CreateAPIView):
 class ArtistListAV(ListAPIView):
     serializer_class = ArtistSerializer
     queryset = Artist.objects.all()
+    search_fields=['user__username','user__first_name','user__lastname']
+
 
 class ArtistDetailAV(RetrieveAPIView):
     serializer_class = ArtistSerializer
