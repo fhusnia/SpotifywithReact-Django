@@ -4,7 +4,6 @@ from user.models import Artist
 
 
 
-
 class ArtistSummary(serializers.ModelSerializer):
     full_name = serializers.CharField(source='user.get_full_name')
     class Meta:
@@ -32,6 +31,11 @@ class SongSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'genre': {'write_only': True}
         }
+
+
+    def validate_artists(self, data):
+        data.append(self.context['request'].user.artist.id)
+        return data
 
 
 

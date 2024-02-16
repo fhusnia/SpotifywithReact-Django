@@ -3,6 +3,7 @@ from rest_framework.parsers import FormParser,MultiPartParser
 from rest_framework import generics
 from .serializers import GenreSerializer,SongSerializer,PlayListSerializer
 from .models import Genre,Song,Playlist
+from .permissions import SongPermission
 
 
 class GenreListAV(generics.ListCreateAPIView):
@@ -20,12 +21,14 @@ class SongListAV(generics.ListCreateAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
     parser_classes = [MultiPartParser,FormParser]
+    permission_classes= [SongPermission]
 
 
 class SongDetailAV(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer 
     parser_classes = [MultiPartParser,FormParser]
+    permission_classes= [SongPermission]
 
 
 class PlaylistListAV(generics.ListCreateAPIView):

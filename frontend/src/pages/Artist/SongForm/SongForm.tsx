@@ -6,95 +6,19 @@ import { IArtist, IGenre } from '../../../types';
 import { getGenreList } from '../../../api/songApi';
 import Autocomplete from '@mui/material/Autocomplete';
 import { searchArtist } from '../../../api/authApi';
-
+import { createSong } from '../../../api/songApi';
 
 
 export interface ISongFormProps {
 }
 
-const dummyArtistList = [
-  
-    {
-        "id": 1,
-        "username": "husnia21",
-        "first_name": "Husniyya",
-        "last_name": "Feyzullayeva",
-        "image": "http://127.0.0.1:8000/media/artist/images/netflixlogo.0.0.jpeg"
-    },
-    {
-        "id": 2,
-        "username": "beher21",
-        "first_name": "Husniyya",
-        "last_name": "Feyzullayeva",
-        "image": "http://127.0.0.1:8000/media/artist/images/image_6487327.JPG"
-    },
-    {
-        "id": 3,
-        "username": "beyaz21",
-        "first_name": "Beyaz",
-        "last_name": "Feyzullayeva",
-        "image": "http://127.0.0.1:8000/media/artist/images/mercedes.jpg"
-    },
-    {
-        "id": 4,
-        "username": "beyaz212",
-        "first_name": "Beyaz",
-        "last_name": "Feyzullayeva",
-        "image": "http://127.0.0.1:8000/media/artist/images/mercedes_gSQ86Up.jpg"
-    },
-    {
-        "id": 5,
-        "username": "beyaz2123",
-        "first_name": "Beyaz",
-        "last_name": "Feyzullayeva",
-        "image": "http://127.0.0.1:8000/media/artist/images/mercedes_yZmRLZQ.jpg"
-    },
-    {
-        "id": 6,
-        "username": "fhusnia",
-        "first_name": "Husnia26",
-        "last_name": "Feyzullayev",
-        "image": "http://127.0.0.1:8000/media/artist/images/bmw.jpg"
-    },
-    {
-        "id": 7,
-        "username": "fhusnia234",
-        "first_name": "ssss",
-        "last_name": "sss",
-        "image": "http://127.0.0.1:8000/media/artist/images/Screen_Shot_2023-01-22_at_17.44.11.png"
-    },
-    {
-        "id": 8,
-        "username": "dhdbddshb",
-        "first_name": "husniahshjs",
-        "last_name": "dshdhdh",
-        "image": "http://127.0.0.1:8000/media/artist/images/Screen_Shot_2023-01-22_at_17.39.10.png"
-    },
-    {
-        "id": 9,
-        "username": "fhusnia99",
-        "first_name": "Husniyye",
-        "last_name": "Feyzullayeva",
-        "image": "http://127.0.0.1:8000/media/artist/images/crop4.jpg"
-    },
-    {
-        "id": 10,
-        "username": "beherf",
-        "first_name": "Beher",
-        "last_name": "Feyzullayev",
-        "image": "http://127.0.0.1:8000/media/artist/images/icons8-olive-24.png"
-    },
-    {
-        "id": 11,
-        "username": "beyazbeyaz",
-        "first_name": "Beyaz",
-        "last_name": "Feyzullayeva",
-        "image": "http://127.0.0.1:8000/media/artist/images/icons8-cheese-91.png"
-    }
-
-]
 
 export default function SongForm (props: ISongFormProps) {
+
+  const [title,setTitle] = React.useState<string>('')
+  const [description,setDescription] = React.useState<string>('')
+  const [duration,setDuration] = React.useState<string>('')
+
 
   const[imageFile,setImageFile] = React.useState<File>()
   const[songFile,setSongFile] = React.useState<File>()
@@ -110,25 +34,6 @@ export default function SongForm (props: ISongFormProps) {
   const imageUploadInputRef = React.useRef<HTMLInputElement>(null)
   const songUploadInputRef = React.useRef<HTMLInputElement>(null)
 
-  React.useEffect(() => {
-    getGenreList().then(response => {
-      setPossibleGenres(response.data)
-    })
-  },[])
-
-  React.useEffect(() =>{
-    const timeout = setTimeout(() => {
-      if(!artistInputValue) return;
-
-      searchArtist(artistInputValue).then(res => {
-        setpossibleArtistList(res.data)
-      })
-      return () =>{
-        clearTimeout(timeout)
-      }
-
-    },500)
-  })
 
 
 
@@ -140,6 +45,8 @@ export default function SongForm (props: ISongFormProps) {
         imageUploadInputRef.current!.click()
     }
   },[imageFile])
+
+
 
 
 
@@ -175,6 +82,9 @@ export default function SongForm (props: ISongFormProps) {
     }
  },[imageFile])
 
+
+
+
   const onArtistChange = (event: React.SyntheticEvent<Element, Event>, value: IArtist[]) => {
       setSelectedArtistList(value)
   }
@@ -184,21 +94,53 @@ export default function SongForm (props: ISongFormProps) {
   }
 
 
+  const submitHandler = React.useCallback(() =>{
+    if(title &&  description && duration && genre && selectedArtistList && imageFile && songFile){
+      const artistJSON = JSON.stringify(selectedArtistList.map(a => a.id))
+      const data = {title ,description, duration ,genre:genre.id, artist:artistJSON,file: songFile}
+      createSong(data)
+    }
+
+  },[title,description,duration,genre,selectedArtistList,imageFile,songFile])
+
+  React.useEffect(() => {
+    getGenreList().then(response => {
+      setPossibleGenres(response.data)
+    })
+  },[])
+
+
+  React.useEffect(() =>{
+    const timeout = setTimeout(() => {
+      if(!artistInputValue) return;
+
+      searchArtist(artistInputValue).then(res => {
+        setpossibleArtistList(res.data)
+      })
+      
+      return () =>{
+        clearTimeout(timeout)
+      }
+
+    },500)
+  })
+
+
 
   return (
     <div className='p-3'>
         <div className="text-center text-3xl mb-10">Song Form</div>
         <form className='w-10/12 mx-auto mb-10 flex flex-col gap-3'>
           <div>
-              <TextField fullWidth  label="Title" variant="outlined" />
+              <TextField value={title}  onChange={e => setTitle(e.target.value)}   fullWidth  label="Title" variant="outlined" />
 
           </div>
           <div>
-              <TextField fullWidth  label="Description" variant="outlined" multiline rows={3} />
+              <TextField value={description}  onChange={e => setDescription(e.target.value)}   fullWidth  label="Description" variant="outlined" multiline rows={3} />
 
           </div>
           <div>
-              <TextField fullWidth  label="Duration (Seconds)" variant="outlined" type="number"/>
+              <TextField value={duration}  onChange={e => setDuration(e.target.value)}   fullWidth  label="Duration (Seconds)" variant="outlined" type="number"/>
 
           </div>
           <Autocomplete
@@ -215,7 +157,7 @@ export default function SongForm (props: ISongFormProps) {
           <Autocomplete
                   multiple
                   id="tags-outlined"
-                  options={dummyArtistList}
+                  options={possibleArtistList}
                   onChange={onArtistChange}
                   getOptionLabel={(option) => option.username}
                   value={selectedArtistList}
@@ -256,6 +198,9 @@ export default function SongForm (props: ISongFormProps) {
               </div>
             <input onChange={imageUploadHandler} ref={imageUploadInputRef} type="file" className='hidden' />
 
+          </div>
+          <div className='my-3'>
+              <Button variant="contained" color="success" size="large" fullWidth>Save</Button>
           </div>
         </form>
     </div>
