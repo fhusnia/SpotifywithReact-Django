@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { authSlice } from './slices/authSlice'
+import notfSlice from './slices/notfSlice'
 
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer, /*statealmaqucun*/
+    notf: notfSlice.reducer
   },
 })
 

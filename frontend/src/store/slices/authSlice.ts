@@ -3,7 +3,8 @@ import { loginCustomer,loginArtist, ICustomerRegisterParams, registerArtist, log
 import { setTokenToAxiosInstance,removeTokenFromAxiosInstance } from "../../api/iaxios"
 
 
-interface IInitialState {
+
+interface IAuthReduxState {
     id: number
     token: string
     user_type: 'unauthorized' | 'customer' | 'artist'
@@ -29,7 +30,7 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: initialState,
     reducers: {
-        setAuthData(state, action: PayloadAction<IInitialState>) {
+        setAuthData(state, action: PayloadAction<IAuthReduxState>) {
             return action.payload
         },
         resetAuthData(){
@@ -51,7 +52,7 @@ export const loadStoredAuthData = createAsyncThunk<void, void>(
         const sessionRawAuthData = sessionStorage.getItem('authData')
         const rawAuthData = localRawAuthData || sessionRawAuthData
         if(rawAuthData){
-            const authData: IInitialState = JSON.parse(rawAuthData)
+            const authData: IAuthReduxState = JSON.parse(rawAuthData)
             setTokenToAxiosInstance(authData.token)
             dispatch(setAuthData(authData))
         }

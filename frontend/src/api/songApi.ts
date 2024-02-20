@@ -11,7 +11,7 @@ interface createSongData{
     description: string
     duration: string
     image: File
-    artist:string
+    artists:string
     file: File
 }
 

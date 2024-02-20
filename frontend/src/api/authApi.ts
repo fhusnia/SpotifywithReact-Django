@@ -43,3 +43,34 @@ export function logout() {
 export function searchArtist(keyword:string){
     return iaxios.get<IArtist[]>(`/auth/artists/?search=${keyword}`)
 }
+
+interface IUserInformationParams {
+    first_name: string
+    last_name: string
+    username: string
+    email: string
+    birth_date:string
+}
+
+interface IUserInformationResponse {
+    birth_date: string
+    email:string
+    first_name: string
+    id: number
+    image: string
+    last_name:string
+    token:string
+    user_type: string
+    username: string
+
+}
+
+
+
+export function changeUserInformations(id:number,data:IUserInformationParams){
+    return iaxios.patch(`/auth/artists/${id}/auth/`,data)
+}
+
+export function getUserAuthInfo(id: number){
+    return iaxios.get<IUserInformationResponse>(`/auth/artists/${id}/auth/`)
+}

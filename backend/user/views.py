@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.generics import RetrieveAPIView,CreateAPIView,ListAPIView
+from rest_framework.generics import RetrieveAPIView,CreateAPIView,ListAPIView,RetrieveUpdateAPIView
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate
 from .serializers import CustomerAuthSerializer, ArtistAuthSerializer,ArtistSerializer
@@ -45,6 +45,11 @@ class CustomerRegisterAV(CreateAPIView):
 
 
 class ArtistRegisterAV(CreateAPIView):
+    serializer_class = ArtistAuthSerializer
+    queryset = Artist.objects.all()
+    parser_classes = [MultiPartParser,FormParser]
+
+class ArtistAuthDetailAV(RetrieveUpdateAPIView):
     serializer_class = ArtistAuthSerializer
     queryset = Artist.objects.all()
     parser_classes = [MultiPartParser,FormParser]

@@ -7,6 +7,8 @@ import { getGenreList } from '../../../api/songApi';
 import Autocomplete from '@mui/material/Autocomplete';
 import { searchArtist } from '../../../api/authApi';
 import { createSong } from '../../../api/songApi';
+import { setNotf } from '../../../store/slices/notfSlice';
+import { useAppDispatch } from '../../../store/hooks';
 
 
 export interface ISongFormProps {
@@ -14,6 +16,8 @@ export interface ISongFormProps {
 
 
 export default function SongForm (props: ISongFormProps) {
+
+  const dispatch = useAppDispatch()
 
   const [title,setTitle] = React.useState<string>('')
   const [description,setDescription] = React.useState<string>('')
@@ -36,6 +40,7 @@ export default function SongForm (props: ISongFormProps) {
 
 
 
+  /* imagechange */
 
   const imageClickHandler = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if(imageFile){
@@ -49,10 +54,13 @@ export default function SongForm (props: ISongFormProps) {
 
 
 
+  /* imageupload */
 
   const imageUploadHandler = React.useCallback((e: React.ChangeEvent<HTMLInputElement>)=>{
       setImageFile(e.target.files![0])
   },[])
+
+  /* songupload */
 
   const songUploadHandler = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) =>{
       setSongFile(e.target.files![0])
@@ -60,6 +68,7 @@ export default function SongForm (props: ISongFormProps) {
   },[])
 
 
+/* removesong */
 
   const songRemoveHandler = React.useCallback(() => {
     setSongFile(undefined)
@@ -67,6 +76,9 @@ export default function SongForm (props: ISongFormProps) {
   },[])
 
   
+
+  /* imagechange */
+
  const imageContentJSX = React.useMemo(() =>{
     if(imageFile){
       const imageSrc = URL.createObjectURL(imageFile)
@@ -84,24 +96,32 @@ export default function SongForm (props: ISongFormProps) {
 
 
 
+/* artistselectinputchange */
 
   const onArtistChange = (event: React.SyntheticEvent<Element, Event>, value: IArtist[]) => {
       setSelectedArtistList(value)
   }
+
+/* artistfilterinputchange */
 
   const onArtistInputChange = (event: React.SyntheticEvent<Element, Event>, value: string) =>{
       setArtistInputValue(value)
   }
 
 
+
+/* Songsubmit save */
   const submitHandler = React.useCallback(() =>{
     if(title &&  description && duration && genre && selectedArtistList && imageFile && songFile){
       const artistJSON = JSON.stringify(selectedArtistList.map(a => a.id))
-      const data = {title ,description, duration ,genre:genre.id, artist:artistJSON,file: songFile}
-      createSong(data)
+      const data = {title ,description, duration ,image:imageFile, genre:genre.id, artists: artistJSON,file: songFile}
+      createSong(data).then(response => {
+        dispatch(setNotf({open: true,message:'Ugurla gonderildi'}))
+      })
     }
 
-  },[title,description,duration,genre,selectedArtistList,imageFile,songFile])
+  },[title,description,duration,genre,selectedArtistList,imageFile,songFile,dispatch])
+
 
   React.useEffect(() => {
     getGenreList().then(response => {
@@ -109,6 +129,9 @@ export default function SongForm (props: ISongFormProps) {
     })
   },[])
 
+
+
+  /* artisttimeinputfilter */
 
   React.useEffect(() =>{
     const timeout = setTimeout(() => {
@@ -200,7 +223,7 @@ export default function SongForm (props: ISongFormProps) {
 
           </div>
           <div className='my-3'>
-              <Button variant="contained" color="success" size="large" fullWidth>Save</Button>
+              <Button  onClick={submitHandler} variant="contained" color="success" size="large" fullWidth>Save</Button>
           </div>
         </form>
     </div>

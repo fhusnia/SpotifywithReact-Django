@@ -47,7 +47,7 @@ export default function ArtistSidebar() {
                         <ListItemText primary="Add Song" secondary="Add Your New Song" />
                     </ListItemButton>
                 </Link>
-                <Link to="/">
+                <Link to="/profile">
                     <ListItemButton>
                         <ListItemAvatar>
                         <Avatar>

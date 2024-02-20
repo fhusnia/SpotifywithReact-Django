@@ -10,10 +10,14 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import ArtistSongs from './pages/Artist/ArtistDashboard/ArtistSongs';
 import SongForm from './pages/Artist/SongForm/SongForm';
 import { loadStoredAuthData } from './store/slices/authSlice';
-
+import Snackbar from '@mui/material/Snackbar';
+import { Alert } from '@mui/material';
+import { removeNotf } from './store/slices/notfSlice';
+import ArtistProfile from './pages/Artist/ArtistDashboard/ArtistProfile';
 
 function App() {
   const authData = useAppSelector(state => state.auth);
+  const notfData = useAppSelector(state => state.notf)
   const dispatch = useAppDispatch()
 
 
@@ -40,6 +44,7 @@ function App() {
         <ArtistLayout>
           <Routes>
             <Route path="/" element={<ArtistSongs />}/>
+            <Route path="/profile" element={<ArtistProfile/>}/>
             <Route path="/song-form/:songId" element={<SongForm />}/>
             <Route path="/*" element={<Navigate to="/" />} />
       
@@ -53,9 +58,21 @@ function App() {
   return (
     <div>
       
-         {routes}
-        
+          {routes}
+          
+        <Snackbar
+          
+          open={notfData.open}
+          onClose={() => dispatch(removeNotf())}
+          autoHideDuration={notfData.duration}
+          anchorOrigin={{ vertical: 'top', horizontal:'right' }}
 
+        >
+          <Alert onClose={() => dispatch(removeNotf())} severity={notfData.color}> 
+            This is a success message
+          </Alert>
+        </Snackbar>
+        
     </div>
   );
 }

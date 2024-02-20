@@ -68,7 +68,6 @@ class ArtistAuthSerializer(serializers.ModelSerializer):
         model = Artist
         fields = ['id', 'token', 'user_type', 'username', 'password', 'gender','birth_date','first_name','user' ,'last_name', 'email', 'image']
         extra_kwargs = {
-            'birth_date': {'write_only':True},
             'gender': {'write_only':True}
         }
       
