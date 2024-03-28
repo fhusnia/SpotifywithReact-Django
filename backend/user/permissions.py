@@ -9,3 +9,5 @@ class ArtistAuthPermission(BasePermission):
             return True
         else:
             return False
+
+

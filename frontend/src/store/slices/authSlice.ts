@@ -1,13 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { loginCustomer,loginArtist, ICustomerRegisterParams, registerArtist, logout } from "../../api/authApi"
+import { loginCustomer,loginArtist,registerCustomer,IArtistRegisterParams, ICustomerRegisterParams, registerArtist, logout } from "../../api/authApi"
 import { setTokenToAxiosInstance,removeTokenFromAxiosInstance } from "../../api/iaxios"
-
+import { setNotf } from "./notfSlice"
 
 
 interface IAuthReduxState {
     id: number
     token: string
-    user_type: 'unauthorized' | 'customer' | 'artist'
+    user_type: 'unchecked' | 'unauthorized' | 'customer' | 'artist'
     username: string
     first_name: string
     last_name: string
@@ -18,7 +18,7 @@ interface IAuthReduxState {
 const initialState = {
     id: 0,
     token: '',
-    user_type: 'unauthorized',
+    user_type: 'unchecked',
     username: '',
     first_name: '',
     last_name: '',
@@ -35,14 +35,18 @@ export const authSlice = createSlice({
         },
         resetAuthData(){
             return initialState
+        } ,
+        setLogout() {
+            const state = {...initialState, user_type: 'unauthorized'}
+            return state
         }
     }
 })
 
 
-export const { setAuthData,resetAuthData } = authSlice.actions
+export const { setAuthData,resetAuthData,setLogout } = authSlice.actions
 
-
+export default authSlice
 
 export const loadStoredAuthData = createAsyncThunk<void, void>(
     'loadStoredAuthData',
@@ -55,6 +59,8 @@ export const loadStoredAuthData = createAsyncThunk<void, void>(
             const authData: IAuthReduxState = JSON.parse(rawAuthData)
             setTokenToAxiosInstance(authData.token)
             dispatch(setAuthData(authData))
+        }else {
+            dispatch(setAuthData({...initialState, user_type: 'unauthorized'}))
         }
     }
 
@@ -63,33 +69,33 @@ export const loadStoredAuthData = createAsyncThunk<void, void>(
 
 
 
-export const customerLoginAction = createAsyncThunk<void, {username: string,password: string}>(
-    'customerLoginAction',
-    async({username,password},{dispatch}) => {
-        const response = await loginCustomer(username,password)
-        const loginData= response.data
-        dispatch(setAuthData(loginData))
-    }
 
-)
-
-
-export const artistLoginAction = createAsyncThunk<void, {username: string,password: string,remember_me: boolean}>(
+export const artistLoginAction = createAsyncThunk<void, {username: string,password: string,rememberMe: boolean}>(
     'artistLoginAction',
-    async({username,password,remember_me},{dispatch}) => {
-        const response = await loginArtist(username,password)
-        const loginData= response.data
-        if(remember_me)
-            localStorage.setItem('authData',JSON.stringify(loginData))
-        else
-            sessionStorage.setItem('authData',JSON.stringify(loginData))
-        setTokenToAxiosInstance(loginData.token)
-        dispatch(setAuthData(loginData))
+    async({username,password,rememberMe},{dispatch}) => {
+        try {
+            const response = await loginArtist(username, password)
+            const loginData = response.data
+            if (rememberMe)
+                localStorage.setItem('authData', JSON.stringify(loginData))
+            else
+                sessionStorage.setItem('authData', JSON.stringify(loginData))
+            setTokenToAxiosInstance(loginData.token)
+            dispatch(setAuthData(loginData))
+            dispatch(setNotf({message: 'Login Successfully!'}))
+        } catch (error: any) {
+            dispatch(setNotf({message: error.response.data.detail, color: 'error'}))
+        }
     }
 
 )
 
-export const artistRegisterAction = createAsyncThunk<void, ICustomerRegisterParams>(
+
+
+
+
+
+export const artistRegisterAction = createAsyncThunk<void, IArtistRegisterParams>(
     'artistRegisterAction',
     async(data,{dispatch}) => {
         const response = await registerArtist(data)
@@ -97,9 +103,49 @@ export const artistRegisterAction = createAsyncThunk<void, ICustomerRegisterPara
         sessionStorage.setItem('authData',JSON.stringify(registerData))
         setTokenToAxiosInstance(registerData.token)
         dispatch(setAuthData(registerData))
+        dispatch(setNotf({message: 'You have registered successfully!'}))
     }
 
 )
+
+
+
+
+export const customerLoginAction = createAsyncThunk<void, {username: string,password: string,rememberMe: boolean}>(
+    'customerLoginAction',
+    async({username,password,rememberMe},{dispatch}) => {
+        try {
+            const response = await loginCustomer(username, password)
+            const loginData = response.data
+            if (rememberMe)
+                localStorage.setItem('authData', JSON.stringify(loginData))
+            else
+                sessionStorage.setItem('authData', JSON.stringify(loginData))
+            setTokenToAxiosInstance(loginData.token)
+            dispatch(setAuthData(loginData))
+            dispatch(setNotf({message: 'Login Successfully!'}))
+        } catch (error: any) {
+            dispatch(setNotf({message: error.response.data.detail, color: 'error'}))
+        }
+    }
+
+)
+
+
+
+
+export const customerRegisterAction = createAsyncThunk<void, ICustomerRegisterParams>(
+    'customerRegisterAction',
+    async(data,{dispatch}) => {
+        const response = await registerCustomer(data)
+        const registerData = response.data
+        sessionStorage.setItem('authData',JSON.stringify(registerData))
+        setTokenToAxiosInstance(registerData.token)
+        dispatch(setAuthData(registerData))
+        dispatch(setNotf({message: 'You have registered successfully!'}))
+    }
+)
+
 
 export const logoutAction = createAsyncThunk<void, void>(
     'logoutAction',
@@ -109,7 +155,18 @@ export const logoutAction = createAsyncThunk<void, void>(
             removeTokenFromAxiosInstance()
             localStorage.removeItem('authData')
             sessionStorage.removeItem('authData')
-            dispatch(resetAuthData())
+            dispatch(setLogout())
         })
+    }
+)
+export const changeAuthData = createAsyncThunk<void, IAuthReduxState>(
+    'changeAuthData',
+    async (payload, {dispatch}) => {
+        dispatch(setAuthData(payload))
+        const jsonData = JSON.stringify(payload)
+        if (localStorage.getItem('authData'))
+            localStorage.setItem('authData', jsonData)
+        else
+            sessionStorage.setItem('authData', jsonData)
     }
 )

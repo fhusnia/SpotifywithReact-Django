@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Genre,Song,Playlist
+from .models import Genre,Song,Playlist,ListenHistory
 from user.models import Artist
 
 
@@ -27,7 +27,7 @@ class SongSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Song
-        fields = '__all__'
+        exclude = ['updated','created','liked_customers','playlists']
         extra_kwargs = {
             'genre': {'write_only': True}
         }
@@ -36,6 +36,11 @@ class SongSerializer(serializers.ModelSerializer):
     def validate_artists(self, data):
         data.append(self.context['request'].user.artist.id)
         return data
+
+class SongSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Song
+        fields = ['id','image','title']
 
 
 
@@ -50,3 +55,8 @@ class PlayListSerializer(serializers.ModelSerializer):
         
     def create(self,validated_data):
         return Playlist.objects.create(customer=self.context['request'].user.customer, **validated_data)
+    
+    
+
+        
+    

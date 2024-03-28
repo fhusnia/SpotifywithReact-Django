@@ -37,6 +37,10 @@ class Artist(models.Model):
 
 
 
+    
+
+
+
 
 
 

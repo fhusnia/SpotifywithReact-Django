@@ -1,25 +1,40 @@
 import * as React from 'react';
+import CustomerSideBar from '../../components/Sidebar/CustomerSidebar';
+import CustomerHistory from '../../containers/Customer/CustomerHistory/CustomerHistory';
+import CustomerNavbar from '../../components/Navbar/CustomerNavbar';
+import Player from '../../containers/Customer/Player/Player';
 
-export interface ILayoutProps {
+export interface ICustomerLayoutProps {
     children: React.ReactNode
 }
 
-export function Layout (props: ILayoutProps) {
+export function CustomerLayout (props: ICustomerLayoutProps) {
   return (
-    <div className='w-screen h-screen bg-orange-700 flex flex-col'>
-      <div className=' bg-green-900 flex-grow flex items-stretch gap-1'>
-        <aside className=' bg-rose-800 basis-2/12 w-60 shrink-0 gap-1 flex flex-col'>
-            <div className='basis-2/12 bg-cyan-300'></div>
-            <div className='flex-grow bg-emerald-700'></div>
+    <div className='w-screen h-screen flex flex-col'>
+      <div className=' flex-grow flex items-stretch gap-1'>
+        <aside className=' w-80 shrink-0 gap-1 flex flex-col'>
+            <div className=' '>
+              <CustomerSideBar/>
+            </div>
+
+
+            <div className='flex-grow '>
+              <CustomerHistory/>
+            </div>
         </aside>
-        <div className=' border-x-indigo-700 flex flex-col flex-grow'>
-          <header className='bg-violet-300 p-10'></header>
-          <main className='flex-grow bg-pink-600'>
+
+        <div className='flex flex-col flex-grow'>
+          <header className=''>
+            <CustomerNavbar/>
+          </header>
+          <main className='flex-grow relative'>
             {props.children}
           </main>
         </div>       
       </div>
-        <section className='p-16 bg-lime-700'></section>
+        <section className=''>
+        <Player />
+        </section>
     </div>
   );
 }

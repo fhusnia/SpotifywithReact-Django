@@ -20,15 +20,15 @@ const notfSlice = createSlice({
     name: 'notfSlice',
     initialState: initialState,
     reducers: {
-        setNotf(state,action:PayloadAction<{open: boolean,message: string,color?: colorTypes,duration?: number}>){
-            state.open = action.payload.open
+        setNotf(state, action:PayloadAction<{message: string, color?: colorTypes, duration?: number}>) {
+            state.open = true
             state.message = action.payload.message
-            if(action.payload.color)
+            if (action.payload.color) 
                 state.color = action.payload.color
-            if(action.payload.duration)
+            if (action.payload.duration)
                 state.duration = action.payload.duration
         },
-        removeNotf(){
+        removeNotf() {
             return initialState
         }
     }

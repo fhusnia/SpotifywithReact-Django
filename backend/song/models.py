@@ -42,3 +42,17 @@ class Song(models.Model):
     def __str__(self):
         return self.title
 
+
+HISTORY_TYPES = [
+    ('artist','Artist'),
+    ('playlist','Playlist')
+]
+
+class ListenHistory(models.Model):
+    customer = models.ForeignKey('user.Customer',on_delete=models.CASCADE,related_name = 'listen_histories')
+    type = models.CharField(max_length=100,choices=HISTORY_TYPES)
+    playlist = models.ForeignKey('song.Playlist',on_delete=models.CASCADE,null=True,blank=True)
+    artist = models.ForeignKey('user.Artist',on_delete=models.CASCADE,null=True,blank=True)
+    pinned = models.BooleanField(default=False)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)

@@ -14,6 +14,14 @@ import Snackbar from '@mui/material/Snackbar';
 import { Alert } from '@mui/material';
 import { removeNotf } from './store/slices/notfSlice';
 import ArtistProfile from './pages/Artist/ArtistDashboard/ArtistProfile';
+import CustomerLogin from './pages/Customer/CustomerAuth/CustomerLogin';
+import CustomerRegister from './pages/Customer/CustomerAuth/CustomerRegister';
+import HomePage from './pages/Customer/HomePage/HomePage';
+import { CustomerLayout } from './HOC/Layout/CustomerLayout';
+import PlaylistPage from './pages/Customer/PlaylistPage/PlaylistPage';
+import SearchPage from './pages/Customer/SearchPage/SearchPage';
+import CustomerProfilePage from './pages/Customer/CustomerProfilePage/CustomerProfilePage';
+
 
 function App() {
   const authData = useAppSelector(state => state.auth);
@@ -31,11 +39,11 @@ function App() {
       return(
         <AuthLayout>
           <Routes>
-            <Route path="/login" element={<div>Customer Login</div>} />
-            <Route path="/register" element={<div>Customer Register</div>} />
+            <Route path="/login" element={<CustomerLogin/>} />
+            <Route path="/register" element={<CustomerRegister/>} />
             <Route path="/artist/login/" element={<ArtistLogin/>} />
             <Route path="/artist/register/" element={<ArtistRegister/>} />
-
+            <Route path="/*" element={<Navigate to="/login" />} />
           </Routes>
         </AuthLayout>
       )
@@ -50,6 +58,21 @@ function App() {
       
           </Routes>
         </ArtistLayout>
+      )
+    }else if(authData.user_type === 'customer'){
+      return(
+        <CustomerLayout>
+          <Routes>
+            <Route path="/" element={<HomePage />}/>
+            <Route path="/playlist/:playlistId" element={<PlaylistPage />}/>
+            <Route path="/profile" element={<CustomerProfilePage />}/>
+            <Route path="/search"/>
+              <Route index element={<SearchPage/>}/>
+              <Route path=":query" element={<SearchPage/>}/>
+            <Route/>
+            <Route path="/*" element={<Navigate to="/" />} />    
+          </Routes>
+        </CustomerLayout>
       )
     }
 
@@ -69,7 +92,7 @@ function App() {
 
         >
           <Alert onClose={() => dispatch(removeNotf())} severity={notfData.color}> 
-            This is a success message
+              {notfData.message}
           </Alert>
         </Snackbar>
         
